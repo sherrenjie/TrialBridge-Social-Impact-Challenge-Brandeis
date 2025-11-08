@@ -4,6 +4,7 @@ import Home from './Home'
 import About from './About'
 import HowItWorks from './HowItWorks'
 import FindTrials from './FindTrials'
+import WhyThisMatters from './WhyThisMatters'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/how-it-works" element={<HowItWorks />} />
+        <Route path="/why-this-matters" element={<WhyThisMatters />} />
         <Route path="/find-trials" element={<FindTrials />} />
       </Routes>
     </Router>
