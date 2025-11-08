@@ -209,7 +209,7 @@ function Home() {
                 
                 <div className="flex items-center gap-2 text-sm text-pink-accent font-medium">
                   <div className="w-2 h-2 bg-pink-accent rounded-full"></div>
-                  <span>AI-powered recommendations</span>
+                  <span>Personalized recommendations, save time and easy to use.</span>
                 </div>
               </div>
             </div>
