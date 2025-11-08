@@ -1,16 +1,48 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { db } from './firebase'
+import { collection, addDoc } from 'firebase/firestore'
+import LocationInput from './LocationInput'
 
 function FindTrials() {
-  const [formData, setFormData] = useState({
-    age: '',
-    location: '',
-    condition: '',
-    gender: 'female'
-  })
+  const [currentStep, setCurrentStep] = useState(1)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [showResults, setShowResults] = useState(false)
+  const totalSteps = 4
 
-  // Hardcoded trial data
+  const [formData, setFormData] = useState({
+    // Step 1: Basic Information
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    age: '',
+    gender: 'female',
+    
+    // Step 2: Location & Availability
+    city: '',
+    state: '',
+    zipCode: '',
+    latitude: null,
+    longitude: null,
+    willingToTravel: 'within-10-miles',
+    availability: [],
+    
+    // Step 3: Health Information
+    primaryCondition: '',
+    otherConditions: [],
+    currentMedications: '',
+    previousTrials: '',
+    healthcareProvider: '',
+    
+    // Step 4: Preferences & Goals
+    researchInterests: [],
+    timeCommitment: '',
+    motivations: [],
+    additionalInfo: ''
+  })
+
+  // Hardcoded trial data (keeping the same trials)
   const trials = [
     {
       id: 1,
@@ -102,21 +134,434 @@ function FindTrials() {
     }
   ]
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setShowResults(true)
-    // Scroll to results
-    setTimeout(() => {
-      document.getElementById('results')?.scrollIntoView({ behavior: 'smooth' })
-    }, 100)
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target
+    
+    if (type === 'checkbox') {
+      const currentArray = formData[name] || []
+      if (checked) {
+        setFormData({ ...formData, [name]: [...currentArray, value] })
+      } else {
+        setFormData({ ...formData, [name]: currentArray.filter(item => item !== value) })
+      }
+    } else {
+      setFormData({ ...formData, [name]: value })
+    }
   }
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
+  // Function specifically for updating location data from LocationInput component
+  const updateLocationData = (locationData) => {
+    console.log('📍 Updating location data:', locationData)
+    setFormData(prevData => ({
+      ...prevData,
+      ...locationData
+    }))
   }
+
+  const nextStep = () => {
+    if (currentStep < totalSteps) {
+      setCurrentStep(currentStep + 1)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
+
+  const prevStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+
+    console.log('🚀 Submitting form data to Firebase:', formData)
+
+    try {
+      // Save to Firebase
+      const docRef = await addDoc(collection(db, 'trial-searches'), {
+        ...formData,
+        createdAt: new Date().toISOString(),
+        timestamp: Date.now()
+      })
+      
+      console.log('✅ Document written with ID: ', docRef.id)
+      
+      // Show results
+      setShowResults(true)
+      setTimeout(() => {
+        document.getElementById('results')?.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
+    } catch (error) {
+      console.error('❌ Error adding document: ', error)
+      alert('There was an error submitting your information. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const renderProgressBar = () => (
+    <div className="mb-12">
+      <div className="flex items-center justify-between mb-4">
+        {[1, 2, 3, 4].map((step) => (
+          <div key={step} className="flex items-center flex-1">
+            <div className={`flex items-center justify-center w-10 h-10 rounded-full font-semibold transition-all ${
+              step <= currentStep 
+                ? 'bg-gradient-to-br from-lilac to-lilac-deep text-white' 
+                : 'bg-gray-200 text-gray-500'
+            }`}>
+              {step}
+            </div>
+            {step < 4 && (
+              <div className={`flex-1 h-1 mx-2 transition-all ${
+                step < currentStep ? 'bg-lilac' : 'bg-gray-200'
+              }`}></div>
+            )}
+          </div>
+        ))}
+      </div>
+      <div className="flex justify-between text-sm text-gray-600">
+        <span className={currentStep === 1 ? 'font-semibold text-lilac-deep' : ''}>Basic Info</span>
+        <span className={currentStep === 2 ? 'font-semibold text-lilac-deep' : ''}>Location</span>
+        <span className={currentStep === 3 ? 'font-semibold text-lilac-deep' : ''}>Health</span>
+        <span className={currentStep === 4 ? 'font-semibold text-lilac-deep' : ''}>Preferences</span>
+      </div>
+    </div>
+  )
+
+  const renderStep1 = () => (
+    <div className="space-y-6">
+      <h3 className="text-2xl font-bold text-gray-900 mb-6">Basic Information</h3>
+      
+      <div className="grid md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="firstName" className="block text-sm font-semibold text-gray-900 mb-2">
+            First Name *
+          </label>
+          <input
+            type="text"
+            id="firstName"
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lilac focus:border-transparent outline-none"
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="lastName" className="block text-sm font-semibold text-gray-900 mb-2">
+            Last Name *
+          </label>
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lilac focus:border-transparent outline-none"
+            required
+          />
+        </div>
+      </div>
+
+      <div>
+        <label htmlFor="email" className="block text-sm font-semibold text-gray-900 mb-2">
+          Email Address *
+        </label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lilac focus:border-transparent outline-none"
+          required
+        />
+      </div>
+
+      <div>
+        <label htmlFor="phone" className="block text-sm font-semibold text-gray-900 mb-2">
+          Phone Number
+        </label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          value={formData.phone}
+          onChange={handleChange}
+          placeholder="(555) 123-4567"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lilac focus:border-transparent outline-none"
+        />
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="age" className="block text-sm font-semibold text-gray-900 mb-2">
+            Age *
+          </label>
+          <input
+            type="number"
+            id="age"
+            name="age"
+            value={formData.age}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lilac focus:border-transparent outline-none"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-gray-900 mb-2">
+            Gender *
+          </label>
+          <div className="flex gap-4 pt-3">
+            <label className="flex items-center">
+              <input
+                type="radio"
+                name="gender"
+                value="female"
+                checked={formData.gender === 'female'}
+                onChange={handleChange}
+                className="w-4 h-4 text-lilac-deep focus:ring-lilac"
+              />
+              <span className="ml-2 text-gray-700">Female</span>
+            </label>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                name="gender"
+                value="male"
+                checked={formData.gender === 'male'}
+                onChange={handleChange}
+                className="w-4 h-4 text-lilac-deep focus:ring-lilac"
+              />
+              <span className="ml-2 text-gray-700">Male</span>
+            </label>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                name="gender"
+                value="other"
+                checked={formData.gender === 'other'}
+                onChange={handleChange}
+                className="w-4 h-4 text-lilac-deep focus:ring-lilac"
+              />
+              <span className="ml-2 text-gray-700">Other</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+
+  const renderStep2 = () => (
+    <LocationInput 
+      formData={formData} 
+      handleChange={handleChange}
+      updateLocationData={updateLocationData}
+    />
+  )
+
+  const renderStep3 = () => (
+    <div className="space-y-6">
+      <h3 className="text-2xl font-bold text-gray-900 mb-6">Health Information</h3>
+      
+      <div>
+        <label htmlFor="primaryCondition" className="block text-sm font-semibold text-gray-900 mb-2">
+          Primary Health Condition or Area of Interest *
+        </label>
+        <select
+          id="primaryCondition"
+          name="primaryCondition"
+          value={formData.primaryCondition}
+          onChange={handleChange}
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lilac focus:border-transparent outline-none"
+          required
+        >
+          <option value="">Select a condition</option>
+          <option value="cardiovascular">Cardiovascular Disease</option>
+          <option value="cancer">Cancer</option>
+          <option value="osteoporosis">Osteoporosis</option>
+          <option value="autoimmune">Autoimmune Disease</option>
+          <option value="diabetes">Diabetes</option>
+          <option value="menopause">Menopause</option>
+          <option value="mental-health">Mental Health</option>
+          <option value="reproductive-health">Reproductive Health</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div>
+        <label className="block text-sm font-semibold text-gray-900 mb-3">
+          Do you have any other health conditions? (Select all that apply)
+        </label>
+        <div className="space-y-2">
+          {['High blood pressure', 'Diabetes', 'Heart disease', 'Thyroid disorder', 'Depression/Anxiety', 'None'].map((condition) => (
+            <label key={condition} className="flex items-center">
+              <input
+                type="checkbox"
+                name="otherConditions"
+                value={condition}
+                checked={formData.otherConditions.includes(condition)}
+                onChange={handleChange}
+                className="w-4 h-4 text-lilac-deep focus:ring-lilac rounded"
+              />
+              <span className="ml-2 text-gray-700">{condition}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <label htmlFor="currentMedications" className="block text-sm font-semibold text-gray-900 mb-2">
+          Current Medications (Optional)
+        </label>
+        <textarea
+          id="currentMedications"
+          name="currentMedications"
+          value={formData.currentMedications}
+          onChange={handleChange}
+          rows="3"
+          placeholder="List any medications you're currently taking..."
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lilac focus:border-transparent outline-none resize-none"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="previousTrials" className="block text-sm font-semibold text-gray-900 mb-2">
+          Have you participated in clinical trials before? *
+        </label>
+        <select
+          id="previousTrials"
+          name="previousTrials"
+          value={formData.previousTrials}
+          onChange={handleChange}
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lilac focus:border-transparent outline-none"
+          required
+        >
+          <option value="">Select an option</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+          <option value="not-sure">Not sure</option>
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="healthcareProvider" className="block text-sm font-semibold text-gray-900 mb-2">
+          Do you have a regular healthcare provider? *
+        </label>
+        <select
+          id="healthcareProvider"
+          name="healthcareProvider"
+          value={formData.healthcareProvider}
+          onChange={handleChange}
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lilac focus:border-transparent outline-none"
+          required
+        >
+          <option value="">Select an option</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+      </div>
+    </div>
+  )
+
+  const renderStep4 = () => (
+    <div className="space-y-6">
+      <h3 className="text-2xl font-bold text-gray-900 mb-6">Preferences & Goals</h3>
+      
+      <div>
+        <label className="block text-sm font-semibold text-gray-900 mb-3">
+          What types of research are you interested in? (Select all that apply)
+        </label>
+        <div className="space-y-2">
+          {[
+            'Prevention studies',
+            'Treatment trials',
+            'Quality of life studies',
+            'Diagnostic studies',
+            'Women\'s health research'
+          ].map((interest) => (
+            <label key={interest} className="flex items-center">
+              <input
+                type="checkbox"
+                name="researchInterests"
+                value={interest}
+                checked={formData.researchInterests.includes(interest)}
+                onChange={handleChange}
+                className="w-4 h-4 text-lilac-deep focus:ring-lilac rounded"
+              />
+              <span className="ml-2 text-gray-700">{interest}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <label htmlFor="timeCommitment" className="block text-sm font-semibold text-gray-900 mb-2">
+          How much time can you commit to trial participation? *
+        </label>
+        <select
+          id="timeCommitment"
+          name="timeCommitment"
+          value={formData.timeCommitment}
+          onChange={handleChange}
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lilac focus:border-transparent outline-none"
+          required
+        >
+          <option value="">Select an option</option>
+          <option value="minimal">Minimal (1-2 visits)</option>
+          <option value="moderate">Moderate (3-6 visits)</option>
+          <option value="significant">Significant (7+ visits)</option>
+          <option value="ongoing">Ongoing/Long-term</option>
+        </select>
+      </div>
+
+      <div>
+        <label className="block text-sm font-semibold text-gray-900 mb-3">
+          What motivates you to participate in clinical research? (Select all that apply)
+        </label>
+        <div className="space-y-2">
+          {[
+            'Help advance medical research',
+            'Access to new treatments',
+            'Better understanding of my health',
+            'Contribute to women\'s health',
+            'Financial compensation'
+          ].map((motivation) => (
+            <label key={motivation} className="flex items-center">
+              <input
+                type="checkbox"
+                name="motivations"
+                value={motivation}
+                checked={formData.motivations.includes(motivation)}
+                onChange={handleChange}
+                className="w-4 h-4 text-lilac-deep focus:ring-lilac rounded"
+              />
+              <span className="ml-2 text-gray-700">{motivation}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <label htmlFor="additionalInfo" className="block text-sm font-semibold text-gray-900 mb-2">
+          Additional Information (Optional)
+        </label>
+        <textarea
+          id="additionalInfo"
+          name="additionalInfo"
+          value={formData.additionalInfo}
+          onChange={handleChange}
+          rows="4"
+          placeholder="Is there anything else you'd like us to know?"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lilac focus:border-transparent outline-none resize-none"
+        />
+      </div>
+    </div>
+  )
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -142,154 +587,87 @@ function FindTrials() {
             Find Your <span className="text-lilac-deep">Clinical Trial</span>
           </h1>
           <p className="text-lg text-gray-600 leading-relaxed">
-            Answer a few questions to discover clinical trials that match your profile.
+            Complete our questionnaire to discover clinical trials that match your profile.
           </p>
         </div>
       </section>
 
       {/* Form Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-3xl mx-auto px-8">
-          <form onSubmit={handleSubmit} className="space-y-8">
-            <div className="bg-white border border-gray-200 rounded-xl p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Your Information</h2>
-              
-              <div className="space-y-6">
-                {/* Age */}
-                <div>
-                  <label htmlFor="age" className="block text-sm font-semibold text-gray-900 mb-2">
-                    Age
-                  </label>
-                  <input
-                    type="number"
-                    id="age"
-                    name="age"
-                    value={formData.age}
-                    onChange={handleChange}
-                    placeholder="Enter your age"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lilac focus:border-transparent outline-none transition-all"
-                    required
-                  />
-                </div>
-
-                {/* Location */}
-                <div>
-                  <label htmlFor="location" className="block text-sm font-semibold text-gray-900 mb-2">
-                    Location (City, State)
-                  </label>
-                  <input
-                    type="text"
-                    id="location"
-                    name="location"
-                    value={formData.location}
-                    onChange={handleChange}
-                    placeholder="e.g., Boston, MA"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lilac focus:border-transparent outline-none transition-all"
-                    required
-                  />
-                </div>
-
-                {/* Health Condition */}
-                <div>
-                  <label htmlFor="condition" className="block text-sm font-semibold text-gray-900 mb-2">
-                    Health Condition or Area of Interest
-                  </label>
-                  <select
-                    id="condition"
-                    name="condition"
-                    value={formData.condition}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lilac focus:border-transparent outline-none transition-all appearance-none bg-white"
-                    required
-                  >
-                    <option value="">Select a condition</option>
-                    <option value="cardiovascular">Cardiovascular Disease</option>
-                    <option value="cancer">Cancer</option>
-                    <option value="osteoporosis">Osteoporosis</option>
-                    <option value="autoimmune">Autoimmune Disease</option>
-                    <option value="diabetes">Diabetes</option>
-                    <option value="menopause">Menopause</option>
-                    <option value="mental-health">Mental Health</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-
-                {/* Gender */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
-                    Gender
-                  </label>
-                  <div className="flex gap-4">
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        name="gender"
-                        value="female"
-                        checked={formData.gender === 'female'}
-                        onChange={handleChange}
-                        className="w-4 h-4 text-lilac-deep focus:ring-lilac focus:ring-2"
-                      />
-                      <span className="ml-2 text-gray-700">Female</span>
-                    </label>
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        name="gender"
-                        value="male"
-                        checked={formData.gender === 'male'}
-                        onChange={handleChange}
-                        className="w-4 h-4 text-lilac-deep focus:ring-lilac focus:ring-2"
-                      />
-                      <span className="ml-2 text-gray-700">Male</span>
-                    </label>
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        name="gender"
-                        value="other"
-                        checked={formData.gender === 'other'}
-                        onChange={handleChange}
-                        className="w-4 h-4 text-lilac-deep focus:ring-lilac focus:ring-2"
-                      />
-                      <span className="ml-2 text-gray-700">Other</span>
-                    </label>
-                  </div>
-                </div>
+      {!showResults && (
+        <section className="py-16 bg-white">
+          <div className="max-w-3xl mx-auto px-8">
+            {renderProgressBar()}
+            
+            <form onSubmit={handleSubmit}>
+              <div className="bg-white border border-gray-200 rounded-xl p-8 mb-8">
+                {currentStep === 1 && renderStep1()}
+                {currentStep === 2 && renderStep2()}
+                {currentStep === 3 && renderStep3()}
+                {currentStep === 4 && renderStep4()}
               </div>
 
-              <button
-                type="submit"
-                className="w-full mt-8 bg-gradient-to-r from-lilac to-lilac-deep text-white py-4 rounded-lg font-semibold text-lg hover:shadow-lg transition-all"
-              >
-                Find Matching Trials
-              </button>
-            </div>
-          </form>
-        </div>
-      </section>
+              {/* Navigation Buttons */}
+              <div className="flex justify-between">
+                <button
+                  type="button"
+                  onClick={prevStep}
+                  disabled={currentStep === 1}
+                  className={`px-8 py-3 rounded-lg font-semibold transition-all ${
+                    currentStep === 1
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  }`}
+                >
+                  Previous
+                </button>
+
+                {currentStep < totalSteps ? (
+                  <button
+                    type="button"
+                    onClick={nextStep}
+                    className="px-8 py-3 bg-gradient-to-r from-lilac to-lilac-deep text-white rounded-lg font-semibold hover:shadow-lg transition-all"
+                  >
+                    Next Step
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="px-8 py-3 bg-gradient-to-r from-lilac to-lilac-deep text-white rounded-lg font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? 'Submitting...' : 'Find Matching Trials'}
+                  </button>
+                )}
+              </div>
+            </form>
+          </div>
+        </section>
+      )}
 
       {/* Did You Know Section */}
-      <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-5xl mx-auto px-8">
-          <div className="bg-white border border-gray-200 rounded-xl p-10">
-            <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">Did You Know?</h3>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="text-lilac-deep font-bold text-3xl mb-2">85%</div>
-                <p className="text-gray-600 text-sm">of participants say trials improved their understanding of their health</p>
-              </div>
-              <div className="text-center">
-                <div className="text-pink-accent font-bold text-3xl mb-2">Free</div>
-                <p className="text-gray-600 text-sm">Most clinical trials provide treatment and care at no cost to participants</p>
-              </div>
-              <div className="text-center">
-                <div className="text-lilac-deep font-bold text-3xl mb-2">24/7</div>
-                <p className="text-gray-600 text-sm">Access to medical professionals throughout your participation</p>
+      {!showResults && (
+        <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
+          <div className="max-w-5xl mx-auto px-8">
+            <div className="bg-white border border-gray-200 rounded-xl p-10">
+              <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">Did You Know?</h3>
+              <div className="grid md:grid-cols-3 gap-8">
+                <div className="text-center">
+                  <div className="text-lilac-deep font-bold text-3xl mb-2">85%</div>
+                  <p className="text-gray-600 text-sm">of participants say trials improved their understanding of their health</p>
+                </div>
+                <div className="text-center">
+                  <div className="text-pink-accent font-bold text-3xl mb-2">Free</div>
+                  <p className="text-gray-600 text-sm">Most clinical trials provide treatment and care at no cost to participants</p>
+                </div>
+                <div className="text-center">
+                  <div className="text-lilac-deep font-bold text-3xl mb-2">24/7</div>
+                  <p className="text-gray-600 text-sm">Access to medical professionals throughout your participation</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Results Section */}
       {showResults && (
@@ -298,7 +676,7 @@ function FindTrials() {
             <div className="mb-12">
               <h2 className="text-4xl font-bold text-gray-900 mb-4">Your Matching Trials</h2>
               <p className="text-lg text-gray-600">
-                We found {trials.length} clinical trials that match your profile. All trials listed actively seek female participants.
+                Based on your profile, we found {trials.length} clinical trials. All trials listed actively seek female participants.
               </p>
             </div>
 
