@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 function Home() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       {/* Navigation */}
       <nav className="bg-white border-b border-gray-200 py-5 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-8 flex justify-between items-center">
@@ -50,77 +50,102 @@ function Home() {
       </section>
 
       {/* Problem-Solution Section */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-lilac-light to-transparent"></div>
-        <div className="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-12">
-          {/* Problem Card */}
-          <div className="bg-white p-12 rounded-3xl border-2 border-pink-200 shadow-lg shadow-lilac/8 hover:-translate-y-2 hover:shadow-xl hover:shadow-lilac/15 transition-all duration-300 relative overflow-hidden animate-fadeInUp">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-300 to-lilac"></div>
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-15 h-15 bg-gradient-to-br from-pink-100 to-pink-300 rounded-2xl flex items-center justify-center animate-pulse-slow">
-                <div className="w-6 h-6 bg-white rounded-full opacity-90"></div>
-              </div>
-              <h3 className="text-3xl font-bold text-lilac-deep">The Problem</h3>
+      <section className="py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-8">
+          {/* Problem Section */}
+          <div className="mb-20">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">The Challenge</h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Women remain significantly underrepresented in clinical research, creating serious gaps in healthcare.
+              </p>
             </div>
-            <p className="text-gray-600 text-lg leading-relaxed mb-8">
-              Many women don't join clinical trials because information is hard to find 
-              or written in inaccessible language.
-            </p>
-            <div className="flex gap-8 items-center p-8 bg-gradient-to-br from-lilac-soft to-lilac/10 rounded-2xl mb-8 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
-              <div className="flex-1 text-center relative z-10">
-                <div className="text-5xl font-extrabold text-lilac-deep leading-none mb-2 animate-countUp">22%</div>
-                <div className="text-sm text-gray-600 font-medium leading-tight">of clinical trial participants are women</div>
+            
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="text-center">
+                <div className="inline-block mb-4">
+                  <div className="text-5xl font-bold text-lilac-deep mb-2">22%</div>
+                  <div className="h-1 w-20 bg-lilac mx-auto"></div>
+                </div>
+                <p className="text-gray-700 leading-relaxed">
+                  of clinical trial participants are women, despite making up over half the population
+                </p>
               </div>
-              <div className="w-0.5 h-15 bg-gradient-to-b from-transparent via-lilac to-transparent"></div>
-              <div className="flex-1 text-center relative z-10">
-                <div className="text-5xl font-extrabold text-lilac-deep leading-none mb-2 animate-countUp">2x</div>
-                <div className="text-sm text-gray-600 font-medium leading-tight">more likely to be underdiagnosed</div>
+
+              <div className="text-center">
+                <div className="inline-block mb-4">
+                  <div className="text-5xl font-bold text-pink-accent mb-2">2×</div>
+                  <div className="h-1 w-20 bg-pink-accent mx-auto"></div>
+                </div>
+                <p className="text-gray-700 leading-relaxed">
+                  more likely to experience adverse drug reactions due to lack of representation
+                </p>
               </div>
-            </div>
-            <div className="p-6 bg-pink-50 border-l-4 border-pink-300 rounded-xl text-base leading-relaxed text-gray-600">
-              <strong className="text-lilac-deep font-semibold">The Result:</strong> Women face higher rates of misdiagnosis, delayed treatment, 
-              and adverse drug reactions because research doesn't include them.
+
+              <div className="text-center">
+                <div className="inline-block mb-4">
+                  <div className="text-5xl font-bold text-lilac-deep mb-2">70%</div>
+                  <div className="h-1 w-20 bg-lilac mx-auto"></div>
+                </div>
+                <p className="text-gray-700 leading-relaxed">
+                  of women don't know how to find clinical trials that match their health needs
+                </p>
+              </div>
             </div>
           </div>
-          
-          {/* Solution Card */}
-          <div className="bg-white p-12 rounded-3xl border-2 border-lilac shadow-lg shadow-lilac/8 hover:-translate-y-2 hover:shadow-xl hover:shadow-lilac/15 transition-all duration-300 relative overflow-hidden animate-fadeInUp delay-100">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-lilac to-lilac-deep"></div>
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-15 h-15 bg-gradient-to-br from-lilac-soft to-lilac-light rounded-2xl flex items-center justify-center animate-pulse-slow">
-                <div className="w-6 h-6 bg-white rounded-full opacity-90"></div>
-              </div>
-              <h3 className="text-3xl font-bold text-lilac-deep">Our Solution</h3>
+
+          {/* Solution Section */}
+          <div className="border-t border-gray-200 pt-20">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Solution</h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                A streamlined platform connecting women with relevant clinical trials through accessible information and personalized matching.
+              </p>
             </div>
-            <p className="text-gray-600 text-lg leading-relaxed mb-8">
-              A web platform that matches women with nearby, relevant, and safe clinical 
-              trials based on their health interests and demographics.
-            </p>
-            <div className="flex flex-col gap-5 mt-8">
-              <div className="flex items-center gap-4 p-4 px-6 bg-gradient-to-br from-lilac-soft to-white rounded-xl hover:bg-gradient-to-br hover:from-lilac-light hover:to-lilac-soft hover:translate-x-2 transition-all animate-slideInRight delay-300">
-                <div className="min-w-7 w-7 h-7 bg-gradient-to-br from-lilac to-lilac-deep rounded-full flex items-center justify-center flex-shrink-0 relative">
-                  <div className="w-1.5 h-3 border-white border-r-2 border-b-2 transform rotate-45 -mb-0.5"></div>
+
+            <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+              <div>
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="w-10 h-10 bg-lilac-soft rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                    <div className="w-5 h-5 bg-lilac-deep rounded"></div>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Accessible Language</h3>
+                    <p className="text-gray-600">Clear explanations of complex medical information without jargon</p>
+                  </div>
                 </div>
-                <span className="text-gray-800 font-medium text-lg">Simple, accessible language</span>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-lilac-soft rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                    <div className="w-5 h-5 bg-pink-accent rounded"></div>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Female-Inclusive Filtering</h3>
+                    <p className="text-gray-600">Prioritizing trials that actively seek women participants</p>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center gap-4 p-4 px-6 bg-gradient-to-br from-lilac-soft to-white rounded-xl hover:bg-gradient-to-br hover:from-lilac-light hover:to-lilac-soft hover:translate-x-2 transition-all animate-slideInRight delay-400">
-                <div className="min-w-7 w-7 h-7 bg-gradient-to-br from-lilac to-lilac-deep rounded-full flex items-center justify-center flex-shrink-0 relative">
-                  <div className="w-1.5 h-3 border-white border-r-2 border-b-2 transform rotate-45 -mb-0.5"></div>
+
+              <div>
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="w-10 h-10 bg-lilac-soft rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                    <div className="w-5 h-5 bg-lilac-deep rounded"></div>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Personalized Matching</h3>
+                    <p className="text-gray-600">Tailored trial recommendations based on your health profile</p>
+                  </div>
                 </div>
-                <span className="text-gray-800 font-medium text-lg">Female-inclusive trial filtering</span>
-              </div>
-              <div className="flex items-center gap-4 p-4 px-6 bg-gradient-to-br from-lilac-soft to-white rounded-xl hover:bg-gradient-to-br hover:from-lilac-light hover:to-lilac-soft hover:translate-x-2 transition-all animate-slideInRight delay-500">
-                <div className="min-w-7 w-7 h-7 bg-gradient-to-br from-lilac to-lilac-deep rounded-full flex items-center justify-center flex-shrink-0 relative">
-                  <div className="w-1.5 h-3 border-white border-r-2 border-b-2 transform rotate-45 -mb-0.5"></div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-lilac-soft rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                    <div className="w-5 h-5 bg-pink-accent rounded"></div>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Location-Based Search</h3>
+                    <p className="text-gray-600">Find nearby trials convenient to your daily life</p>
+                  </div>
                 </div>
-                <span className="text-gray-800 font-medium text-lg">Personalized trial matching</span>
-              </div>
-              <div className="flex items-center gap-4 p-4 px-6 bg-gradient-to-br from-lilac-soft to-white rounded-xl hover:bg-gradient-to-br hover:from-lilac-light hover:to-lilac-soft hover:translate-x-2 transition-all animate-slideInRight delay-600">
-                <div className="min-w-7 w-7 h-7 bg-gradient-to-br from-lilac to-lilac-deep rounded-full flex items-center justify-center flex-shrink-0 relative">
-                  <div className="w-1.5 h-3 border-white border-r-2 border-b-2 transform rotate-45 -mb-0.5"></div>
-                </div>
-                <span className="text-gray-800 font-medium text-lg">Location-based recommendations</span>
               </div>
             </div>
           </div>
@@ -128,30 +153,124 @@ function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white" id="how-it-works">
-        <div className="max-w-7xl mx-auto px-8">
-          <h2 className="text-center text-5xl font-bold text-gray-800 mb-12">How TrialBridge Works</h2>
-          <div className="grid grid-cols-4 gap-8 mt-12">
-            <div className="p-10 bg-gradient-to-br from-lilac-soft to-white rounded-2xl text-center border border-lilac-light hover:-translate-y-2 hover:shadow-xl hover:shadow-lilac/15 transition-all">
-              <div className="w-15 h-15 bg-gradient-to-br from-lilac to-lilac-deep rounded-full flex items-center justify-center text-3xl font-bold text-white mx-auto mb-6 shadow-lg shadow-lilac/25">1</div>
-              <h4 className="text-2xl font-bold text-lilac-deep mb-4">Simple Profile</h4>
-              <p className="text-gray-600 leading-relaxed">Tell us about your age, health conditions, and location in a quick, easy form.</p>
+      <section className="py-24 bg-gradient-to-br from-lilac-soft via-gray-50 to-lilac-light relative overflow-hidden" id="how-it-works">
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-lilac/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-pink-accent/10 rounded-full blur-3xl"></div>
+        
+        <div className="max-w-6xl mx-auto px-8 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">How TrialBridge Works</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              A seamless journey from profile creation to trial participation in four intuitive steps.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Step 1 */}
+            <div className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-lilac/20 to-transparent rounded-bl-full transition-all duration-500 group-hover:scale-150"></div>
+              
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-14 h-14 bg-gradient-to-br from-lilac to-lilac-deep rounded-xl flex items-center justify-center text-white text-2xl font-bold shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    01
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900">Create Your Profile</h3>
+                </div>
+                
+                <p className="text-gray-600 leading-relaxed mb-4">
+                  Share basic information about your age, health interests, and location through our simple questionnaire.
+                </p>
+                
+                <div className="flex items-center gap-2 text-sm text-lilac-deep font-medium">
+                  <div className="w-2 h-2 bg-lilac-deep rounded-full"></div>
+                  <span>Takes less than 5 minutes</span>
+                </div>
+              </div>
             </div>
-            <div className="p-10 bg-gradient-to-br from-lilac-soft to-white rounded-2xl text-center border border-lilac-light hover:-translate-y-2 hover:shadow-xl hover:shadow-lilac/15 transition-all">
-              <div className="w-15 h-15 bg-gradient-to-br from-lilac to-lilac-deep rounded-full flex items-center justify-center text-3xl font-bold text-white mx-auto mb-6 shadow-lg shadow-lilac/25">2</div>
-              <h4 className="text-2xl font-bold text-lilac-deep mb-4">Smart Matching</h4>
-              <p className="text-gray-600 leading-relaxed">We search ClinicalTrials.gov to find trials that match your unique profile.</p>
+
+            {/* Step 2 */}
+            <div className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-pink-accent/20 to-transparent rounded-bl-full transition-all duration-500 group-hover:scale-150"></div>
+              
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-14 h-14 bg-gradient-to-br from-pink-accent to-lilac rounded-xl flex items-center justify-center text-white text-2xl font-bold shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    02
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900">Smart Matching</h3>
+                </div>
+                
+                <p className="text-gray-600 leading-relaxed mb-4">
+                  Our algorithm searches ClinicalTrials.gov to find trials that align with your profile and prioritize female-inclusive research.
+                </p>
+                
+                <div className="flex items-center gap-2 text-sm text-pink-accent font-medium">
+                  <div className="w-2 h-2 bg-pink-accent rounded-full"></div>
+                  <span>AI-powered recommendations</span>
+                </div>
+              </div>
             </div>
-            <div className="p-10 bg-gradient-to-br from-lilac-soft to-white rounded-2xl text-center border border-lilac-light hover:-translate-y-2 hover:shadow-xl hover:shadow-lilac/15 transition-all">
-              <div className="w-15 h-15 bg-gradient-to-br from-lilac to-lilac-deep rounded-full flex items-center justify-center text-3xl font-bold text-white mx-auto mb-6 shadow-lg shadow-lilac/25">3</div>
-              <h4 className="text-2xl font-bold text-lilac-deep mb-4">Women-Focused</h4>
-              <p className="text-gray-600 leading-relaxed">We highlight trials with female-inclusive criteria and research.</p>
+
+            {/* Step 3 */}
+            <div className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-lilac-light/30 to-transparent rounded-bl-full transition-all duration-500 group-hover:scale-150"></div>
+              
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-14 h-14 bg-gradient-to-br from-lilac-light to-lilac rounded-xl flex items-center justify-center text-white text-2xl font-bold shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    03
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900">Review Results</h3>
+                </div>
+                
+                <p className="text-gray-600 leading-relaxed mb-4">
+                  Browse personalized trial listings with clear eligibility criteria, location details, and easy-to-understand descriptions.
+                </p>
+                
+                <div className="flex items-center gap-2 text-sm text-lilac-deep font-medium">
+                  <div className="w-2 h-2 bg-lilac-deep rounded-full"></div>
+                  <span>No medical jargon</span>
+                </div>
+              </div>
             </div>
-            <div className="p-10 bg-gradient-to-br from-lilac-soft to-white rounded-2xl text-center border border-lilac-light hover:-translate-y-2 hover:shadow-xl hover:shadow-lilac/15 transition-all">
-              <div className="w-15 h-15 bg-gradient-to-br from-lilac to-lilac-deep rounded-full flex items-center justify-center text-3xl font-bold text-white mx-auto mb-6 shadow-lg shadow-lilac/25">4</div>
-              <h4 className="text-2xl font-bold text-lilac-deep mb-4">Clear Information</h4>
-              <p className="text-gray-600 leading-relaxed">Understand gender gaps in research with our "Did You Know?" facts panel.</p>
+
+            {/* Step 4 */}
+            <div className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-lilac-deep/20 to-transparent rounded-bl-full transition-all duration-500 group-hover:scale-150"></div>
+              
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-14 h-14 bg-gradient-to-br from-lilac-deep to-lilac rounded-xl flex items-center justify-center text-white text-2xl font-bold shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    04
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900">Take Action</h3>
+                </div>
+                
+                <p className="text-gray-600 leading-relaxed mb-4">
+                  Connect directly with research coordinators and receive guidance on what to expect throughout the enrollment process.
+                </p>
+                
+                <div className="flex items-center gap-2 text-sm text-pink-accent font-medium">
+                  <div className="w-2 h-2 bg-pink-accent rounded-full"></div>
+                  <span>Direct contact information</span>
+                </div>
+              </div>
             </div>
+          </div>
+
+          {/* Call-to-action */}
+          <div className="text-center mt-16">
+            <Link 
+              to="/find-trials" 
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-lilac to-lilac-deep text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all"
+            >
+              <span>Start Your Search</span>
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </Link>
           </div>
         </div>
       </section>
@@ -168,9 +287,9 @@ function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8 text-center mt-auto">
+      <footer className="bg-gray-900 text-white py-8 text-center mt-auto">
         <div className="max-w-7xl mx-auto px-8">
-          <p className="opacity-80 text-sm">&copy; 2025 TrialBridge. Empowering women's health through research participation.</p>
+          <p className="opacity-70 text-sm">&copy; 2025 TrialBridge. Empowering women's health through research participation.</p>
         </div>
       </footer>
     </div>
