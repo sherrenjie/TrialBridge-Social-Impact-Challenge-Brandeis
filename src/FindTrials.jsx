@@ -1,0 +1,392 @@
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+
+function FindTrials() {
+  const [formData, setFormData] = useState({
+    age: '',
+    location: '',
+    condition: '',
+    gender: 'female'
+  })
+  const [showResults, setShowResults] = useState(false)
+
+  // Hardcoded trial data
+  const trials = [
+    {
+      id: 1,
+      title: "Cardiovascular Health in Women",
+      nctId: "NCT05234567",
+      condition: "Cardiovascular Disease",
+      phase: "Phase 3",
+      location: "Boston, MA",
+      distance: "2.3 miles",
+      status: "Recruiting",
+      femaleInclusive: true,
+      description: "A study examining cardiovascular outcomes in women aged 40-65 with focus on hormone-related factors and disease progression.",
+      eligibility: [
+        "Women aged 40-65 years",
+        "Diagnosed with cardiovascular disease",
+        "No prior heart surgery"
+      ],
+      contact: {
+        name: "Dr. Sarah Johnson",
+        phone: "(617) 555-0123",
+        email: "sjohnson@research.org"
+      }
+    },
+    {
+      id: 2,
+      title: "Breast Cancer Prevention Study",
+      nctId: "NCT05234568",
+      condition: "Breast Cancer",
+      phase: "Phase 2",
+      location: "Cambridge, MA",
+      distance: "5.1 miles",
+      status: "Recruiting",
+      femaleInclusive: true,
+      description: "Investigating preventive interventions for women at high risk of breast cancer, focusing on lifestyle and medication approaches.",
+      eligibility: [
+        "Women aged 35-70 years",
+        "Family history of breast cancer",
+        "No current cancer diagnosis"
+      ],
+      contact: {
+        name: "Dr. Emily Chen",
+        phone: "(617) 555-0124",
+        email: "echen@research.org"
+      }
+    },
+    {
+      id: 3,
+      title: "Osteoporosis Treatment in Postmenopausal Women",
+      nctId: "NCT05234569",
+      condition: "Osteoporosis",
+      phase: "Phase 3",
+      location: "Waltham, MA",
+      distance: "0.8 miles",
+      status: "Recruiting",
+      femaleInclusive: true,
+      description: "Evaluating a new treatment approach for osteoporosis in postmenopausal women with emphasis on bone density improvement.",
+      eligibility: [
+        "Postmenopausal women aged 50+",
+        "Diagnosed with osteoporosis",
+        "No current bone medications"
+      ],
+      contact: {
+        name: "Dr. Maria Rodriguez",
+        phone: "(781) 555-0125",
+        email: "mrodriguez@research.org"
+      }
+    },
+    {
+      id: 4,
+      title: "Autoimmune Disease Management in Women",
+      nctId: "NCT05234570",
+      condition: "Autoimmune Disease",
+      phase: "Phase 2",
+      location: "Boston, MA",
+      distance: "3.7 miles",
+      status: "Recruiting",
+      femaleInclusive: true,
+      description: "Studying gender-specific factors in autoimmune disease progression and response to treatment in women.",
+      eligibility: [
+        "Women aged 18-60 years",
+        "Diagnosed autoimmune condition",
+        "Currently on stable medication"
+      ],
+      contact: {
+        name: "Dr. Jennifer Williams",
+        phone: "(617) 555-0126",
+        email: "jwilliams@research.org"
+      }
+    }
+  ]
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setShowResults(true)
+    // Scroll to results
+    setTimeout(() => {
+      document.getElementById('results')?.scrollIntoView({ behavior: 'smooth' })
+    }, 100)
+  }
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col bg-white">
+      {/* Navigation */}
+      <nav className="bg-white border-b border-gray-200 py-5 sticky top-0 z-50 shadow-sm">
+        <div className="max-w-7xl mx-auto px-8 flex justify-between items-center">
+          <Link to="/" className="flex items-center text-2xl font-bold text-lilac-deep">
+            <div className="w-2 h-2 bg-gradient-to-br from-lilac to-lilac-deep rounded-full mr-2"></div>
+            <span className="tracking-tight">TrialBridge</span>
+          </Link>
+          <div className="flex gap-8 items-center">
+            <Link to="/about" className="text-gray-800 font-medium hover:text-lilac transition-colors">About</Link>
+            <Link to="/how-it-works" className="text-gray-800 font-medium hover:text-lilac transition-colors">How It Works</Link>
+            <Link to="/find-trials" className="text-lilac-deep font-semibold">Find Trials</Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="bg-gradient-to-b from-gray-50 to-white py-16">
+        <div className="max-w-4xl mx-auto px-8 text-center">
+          <h1 className="text-5xl font-bold text-gray-900 mb-4 tracking-tight">
+            Find Your <span className="text-lilac-deep">Clinical Trial</span>
+          </h1>
+          <p className="text-lg text-gray-600 leading-relaxed">
+            Answer a few questions to discover clinical trials that match your profile.
+          </p>
+        </div>
+      </section>
+
+      {/* Form Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-3xl mx-auto px-8">
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="bg-white border border-gray-200 rounded-xl p-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Your Information</h2>
+              
+              <div className="space-y-6">
+                {/* Age */}
+                <div>
+                  <label htmlFor="age" className="block text-sm font-semibold text-gray-900 mb-2">
+                    Age
+                  </label>
+                  <input
+                    type="number"
+                    id="age"
+                    name="age"
+                    value={formData.age}
+                    onChange={handleChange}
+                    placeholder="Enter your age"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lilac focus:border-transparent outline-none transition-all"
+                    required
+                  />
+                </div>
+
+                {/* Location */}
+                <div>
+                  <label htmlFor="location" className="block text-sm font-semibold text-gray-900 mb-2">
+                    Location (City, State)
+                  </label>
+                  <input
+                    type="text"
+                    id="location"
+                    name="location"
+                    value={formData.location}
+                    onChange={handleChange}
+                    placeholder="e.g., Boston, MA"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lilac focus:border-transparent outline-none transition-all"
+                    required
+                  />
+                </div>
+
+                {/* Health Condition */}
+                <div>
+                  <label htmlFor="condition" className="block text-sm font-semibold text-gray-900 mb-2">
+                    Health Condition or Area of Interest
+                  </label>
+                  <select
+                    id="condition"
+                    name="condition"
+                    value={formData.condition}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lilac focus:border-transparent outline-none transition-all appearance-none bg-white"
+                    required
+                  >
+                    <option value="">Select a condition</option>
+                    <option value="cardiovascular">Cardiovascular Disease</option>
+                    <option value="cancer">Cancer</option>
+                    <option value="osteoporosis">Osteoporosis</option>
+                    <option value="autoimmune">Autoimmune Disease</option>
+                    <option value="diabetes">Diabetes</option>
+                    <option value="menopause">Menopause</option>
+                    <option value="mental-health">Mental Health</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                {/* Gender */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-900 mb-2">
+                    Gender
+                  </label>
+                  <div className="flex gap-4">
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="female"
+                        checked={formData.gender === 'female'}
+                        onChange={handleChange}
+                        className="w-4 h-4 text-lilac-deep focus:ring-lilac focus:ring-2"
+                      />
+                      <span className="ml-2 text-gray-700">Female</span>
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="male"
+                        checked={formData.gender === 'male'}
+                        onChange={handleChange}
+                        className="w-4 h-4 text-lilac-deep focus:ring-lilac focus:ring-2"
+                      />
+                      <span className="ml-2 text-gray-700">Male</span>
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="other"
+                        checked={formData.gender === 'other'}
+                        onChange={handleChange}
+                        className="w-4 h-4 text-lilac-deep focus:ring-lilac focus:ring-2"
+                      />
+                      <span className="ml-2 text-gray-700">Other</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full mt-8 bg-gradient-to-r from-lilac to-lilac-deep text-white py-4 rounded-lg font-semibold text-lg hover:shadow-lg transition-all"
+              >
+                Find Matching Trials
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      {/* Did You Know Section */}
+      <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-5xl mx-auto px-8">
+          <div className="bg-white border border-gray-200 rounded-xl p-10">
+            <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">Did You Know?</h3>
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="text-center">
+                <div className="text-lilac-deep font-bold text-3xl mb-2">85%</div>
+                <p className="text-gray-600 text-sm">of participants say trials improved their understanding of their health</p>
+              </div>
+              <div className="text-center">
+                <div className="text-pink-accent font-bold text-3xl mb-2">Free</div>
+                <p className="text-gray-600 text-sm">Most clinical trials provide treatment and care at no cost to participants</p>
+              </div>
+              <div className="text-center">
+                <div className="text-lilac-deep font-bold text-3xl mb-2">24/7</div>
+                <p className="text-gray-600 text-sm">Access to medical professionals throughout your participation</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Results Section */}
+      {showResults && (
+        <section id="results" className="py-16 bg-white">
+          <div className="max-w-6xl mx-auto px-8">
+            <div className="mb-12">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">Your Matching Trials</h2>
+              <p className="text-lg text-gray-600">
+                We found {trials.length} clinical trials that match your profile. All trials listed actively seek female participants.
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              {trials.map((trial) => (
+                <div
+                  key={trial.id}
+                  className="bg-white border border-gray-200 rounded-xl p-8 hover:border-lilac transition-all"
+                >
+                  {/* Header */}
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <h3 className="text-2xl font-bold text-gray-900">{trial.title}</h3>
+                        {trial.femaleInclusive && (
+                          <span className="px-3 py-1 bg-pink-accent/20 text-pink-accent text-xs font-semibold rounded-full">
+                            Female-Inclusive
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-4 text-sm text-gray-600">
+                        <span className="font-medium">{trial.nctId}</span>
+                        <span>•</span>
+                        <span>{trial.phase}</span>
+                        <span>•</span>
+                        <span className="text-green-600 font-medium">{trial.status}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Location */}
+                  <div className="flex items-center gap-2 text-gray-700 mb-4">
+                    <svg className="w-5 h-5 text-lilac-deep" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span className="font-medium">{trial.location}</span>
+                    <span className="text-gray-500">({trial.distance} away)</span>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-gray-600 leading-relaxed mb-6">
+                    {trial.description}
+                  </p>
+
+                  {/* Eligibility */}
+                  <div className="mb-6">
+                    <h4 className="text-sm font-semibold text-gray-900 mb-3">Key Eligibility Criteria:</h4>
+                    <ul className="space-y-2">
+                      {trial.eligibility.map((criterion, index) => (
+                        <li key={index} className="flex items-start gap-2 text-sm text-gray-700">
+                          <span className="text-lilac-deep mt-1">•</span>
+                          <span>{criterion}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Contact & Actions */}
+                  <div className="flex items-center justify-between pt-6 border-t border-gray-200">
+                    <div className="text-sm text-gray-600">
+                      <p className="font-medium text-gray-900">{trial.contact.name}</p>
+                      <p>{trial.contact.phone} • {trial.contact.email}</p>
+                    </div>
+                    <div className="flex gap-3">
+                      <button className="px-6 py-2 border border-lilac text-lilac-deep rounded-lg font-medium hover:bg-lilac-soft transition-all">
+                        Learn More
+                      </button>
+                      <button className="px-6 py-2 bg-lilac text-white rounded-lg font-medium hover:bg-lilac-deep transition-all">
+                        Contact Study
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-8 text-center mt-auto">
+        <div className="max-w-7xl mx-auto px-8">
+          <p className="opacity-70 text-sm">&copy; 2025 TrialBridge. Empowering women's health through research participation.</p>
+        </div>
+      </footer>
+    </div>
+  )
+}
+
+export default FindTrials
