@@ -14,6 +14,7 @@ function HowItWorks() {
           <div className="flex gap-8 items-center">
             <Link to="/about" className="text-gray-800 font-medium hover:text-lilac transition-colors">About</Link>
             <Link to="/how-it-works" className="text-lilac-deep font-semibold hover:text-lilac transition-colors">How It Works</Link>
+            <Link to="/why-this-matters" className="text-gray-800 font-medium hover:text-lilac transition-colors">Why This Matters</Link>
             <Link to="/find-trials" className="bg-lilac text-white px-6 py-2.5 rounded-full font-semibold hover:bg-lilac-deep hover:-translate-y-0.5 hover:shadow-lg hover:shadow-lilac/30 transition-all">Find Trials</Link>
           </div>
         </div>
