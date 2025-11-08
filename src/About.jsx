@@ -55,7 +55,7 @@ function About() {
       {/* Mission Statement */}
       <section 
         className="py-24 bg-white relative bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/public/tree.png')" }}
+        style={{ backgroundImage: "url('/../public/tree.png')" }}
       >
         {/* Overlay for readability */}
         <div className="absolute inset-0 bg-white/50"></div>
