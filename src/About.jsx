@@ -1,27 +1,31 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import treeImageUrl from './assets/tree.png';
+import sherrenImage from './assets/sherren.png';
+import jasmineImage from './assets/jasmine.jpeg';
+import mariaImage from './assets/Maria.png';
 
 function About() {
   const teamMembers = [
     {
-      name: "Team Member 1",
-      role: "Role Title",
-      bio: "Short introduction about this team member and their background in women's health or tech. Placeholder for now.",
-      image: "/placeholder-team-1.jpg"
+      name: "Sherren Jie",
+      role: "Senior at Brandeis, Computer Science",
+      bio: "I love building apps that make a real impact! I have experience in full-stack development and am passionate about improving healthcare access for women",
+      image: sherrenImage
     },
     {
-      name: "Team Member 2",
-      role: "Role Title",
-      bio: "Short introduction about this team member and their background in women's health or tech. Placeholder for now.",
-      image: "/placeholder-team-2.jpg"
+      name: "Jasmine Huang",
+      role: "Senior at Brandeis, Computer Science & Business",
+      bio: "Jasmine brings experience in product management and software development, with a focus on creating accessible and impactful tech solutions.",
+      image: jasmineImage
     },
     {
-      name: "Team Member 3",
-      role: "Role Title",
-      bio: "Short introduction about this team member and their background in women's health or tech. Placeholder for now.",
-      image: "/placeholder-team-3.jpg"
+      name: "Maria Koraicho",
+      role: "Senior at Brandeis, Business & Legal Studies Minor",
+      bio: "Maria is interested in the intersection of business, policy, and women's health advocacy, helping bridge gaps between technology and impact.",
+      image: mariaImage
     }
-  ]
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -35,6 +39,7 @@ function About() {
           <div className="flex gap-8 items-center">
             <Link to="/about" className="text-lilac-deep font-semibold hover:text-lilac transition-colors">About</Link>
             <Link to="/how-it-works" className="text-gray-800 font-medium hover:text-lilac transition-colors">How It Works</Link>
+            <Link to="/why-this-matters" className="text-gray-800 font-medium hover:text-lilac transition-colors">Why This Matters</Link>
             <Link to="/find-trials" className="bg-lilac text-white px-6 py-2.5 rounded-full font-semibold hover:bg-lilac-deep hover:-translate-y-0.5 hover:shadow-lg hover:shadow-lilac/30 transition-all">Find Trials</Link>
           </div>
         </div>
@@ -53,10 +58,11 @@ function About() {
       </section>
 
       {/* Mission Statement */}
-      <section 
-        className="py-24 bg-white relative bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/../public/tree.png')" }}
-      >
+      <section
+  className="py-24 bg-white relative bg-cover bg-center bg-no-repeat"
+  style={{ backgroundImage: `url(${treeImageUrl})` }}
+>
+
         {/* Overlay for readability */}
         <div className="absolute inset-0 bg-white/50"></div>
         
@@ -78,7 +84,8 @@ function About() {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">The Gender Gap in Research</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Women remain significantly underrepresented in clinical trials, leading to serious health disparities and safety concerns.
+              Approximately 7,932,000 women are diagnosed each year.
+              Only one percent of healthcare research and innovation was invested in female-specific conditions beyond oncology.
             </p>
           </div>
 
@@ -170,28 +177,31 @@ function About() {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Meet Our Team</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Dedicated professionals committed to making clinical trials more accessible and inclusive for women.
+              Dedicated students committed to making clinical trials more accessible and inclusive for women.
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {teamMembers.map((member, index) => (
-              <div key={index} className="text-center">
-                {/* Profile Picture Placeholder */}
-                <div className="w-48 h-48 mx-auto mb-6 rounded-full bg-gradient-to-br from-lilac-soft to-lilac-light flex items-center justify-center overflow-hidden border-4 border-white shadow-lg">
-                  <div className="text-7xl text-lilac-deep font-bold">
-                    {member.name.charAt(0)}
-                  </div>
-                </div>
-                
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{member.name}</h3>
-                  <p className="text-lilac-deep font-medium mb-4">{member.role}</p>
-                  <p className="text-gray-600 leading-relaxed">{member.bio}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+  {teamMembers.map((member, index) => (
+    <div key={index} className="text-center">
+      {/* Profile Picture */}
+      <div className="w-48 h-48 mx-auto mb-6 rounded-full overflow-hidden border-4 border-white shadow-lg">
+        <img
+          src={member.image}
+          alt={member.name}
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      <div>
+        <h3 className="text-2xl font-bold text-gray-900 mb-2">{member.name}</h3>
+        <p className="text-lilac-deep font-medium mb-4">{member.role}</p>
+        <p className="text-gray-600 leading-relaxed">{member.bio}</p>
+      </div>
+    </div>
+  ))}
+</div>
+
         </div>
       </section>
 
