@@ -28,8 +28,9 @@ function Home() {
               Empowering Women Through <span className="text-lilac-deep bg-gradient-to-r from-lilac-light to-lilac bg-clip-text text-transparent">Clinical Trial Access</span>
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
-              Take control of your health journey. Find nearby, relevant, and safe clinical trials 
-              designed with women's health in mind.
+              Each year, 7.9 million women are misdiagnosed, and women are 75% more likely than men to experience adverse reactions to medications.
+Why? Because less than 35% of trial participants are female, and most studies still exclude women of reproductive age.
+TrialBridge empowers women by matching them with verified clinical trials that reflect their biology — not overlook it.
             </p>
             <div className="flex gap-4 mt-4">
             <Link to="/find-trials" className="bg-gradient-to-br from-lilac to-lilac-deep text-white px-8 py-4 rounded-full font-semibold shadow-lg shadow-lilac/30 hover:-translate-y-1 hover:shadow-xl hover:shadow-lilac/40 transition-all inline-flex items-center justify-center">
